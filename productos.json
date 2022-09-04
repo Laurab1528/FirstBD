@@ -1,0 +1,68 @@
+[
+  {
+    "title": "LG450",
+    "price": "145000",
+    "thumbnail": "https://www.shutterstock.com/es/image-photo/sep-9-2019-san-mateo-ca-1500989765",
+    "id": 11
+  },
+  {
+    "title": "Plasma",
+    "price": "12000",
+    "thumbnail": "https://www.samsung.com/cl/tvs/hd-tv/t4300-32-inch-hd-smart-tv-un32t4300agxzs/",
+    "id": 10
+  },
+  {
+    "title": "gfhjk",
+    "price": "123",
+    "thumbnail": "https://as.com/betech/tag/television_inteligente/a/",
+    "id": 8
+  },
+  {
+    "title": "zoom",
+    "price": "12",
+    "thumbnail": "https://as.com/betech/tag/television_inteligente/a/",
+    "id": 7
+  },
+  {
+    "title": "LG",
+    "price": "1200",
+    "thumbnail": "https://as.com/betech/tag/television_inteligente/a/",
+    "id": 6
+  },
+  {
+    "title": "producto1",
+    "price": "120",
+    "thumbnail": "https://www.samsung.com/cl/tvs/hd-tv/t4300-32-inch-hd-smart-tv-un32t4300agxzs/",
+    "id": 5
+  },
+  {
+    "title": "Samsung",
+    "price": "12000",
+    "thumbnail": "https://www.samsung.com/cl/tvs/hd-tv/t4300-32-inch-hd-smart-tv-un32t4300agxzs/",
+    "id": 4
+  },
+  {
+    "name": "Sony",
+    "price": 2500,
+    "thumbnail": "https://cosonyb2c.vtexassets.com/arquivos/ids/350956-1600-1600?v=637550243914100000&width=1600&height=1600&aspect=true",
+    "id": 3
+  },
+  {
+    "name": "LG",
+    "price": 1000,
+    "thumbnail": "https://www.lg.com/es/images/television/md07528986/gallery/1-1100.jpg",
+    "id": 2
+  },
+  {
+    "name": "Sony",
+    "price": 2500,
+    "thumbnail": "https://cosonyb2c.vtexassets.com/arquivos/ids/350956-1600-1600?v=637550243914100000&width=1600&height=1600&aspect=true",
+    "id": 1
+  },
+  {
+    "title": "LG450",
+    "price": "145000",
+    "thumbnail": "https://www.shutterstock.com/es/image-photo/sep-9-2019-san-mateo-ca-1500989765",
+    "id": 12
+  }
+]
