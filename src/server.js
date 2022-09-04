@@ -4,14 +4,17 @@ const app = express();
 
 const { Server } = require('socket.io');
 const { engine } = require('express-handlebars');
-const Contenedor = require('./Contenedor')
+const Contenedor = require('./Contenedor');
+const {optionsMariaDB} = require('../options/ConfigMariaDB');
+const {optionsSQLite3} = require('../options/ConfigSQLite');
+
 
 
 const server = http.createServer(app);
 const io = new Server(server);
 
-const contenedor = new Contenedor("productos.json");
-const chat = new Contenedor("chat.json")
+const contenedor = new Contenedor(optionsMariaDB,productos);
+const chat = new Contenedor(optionsSQLite3, mydb.sqlite);
 
 
 
@@ -76,18 +79,9 @@ app.get("/", (req, res) => {
   res.render("partials/formulario");
 });
 
-const PORT = 8085;
+const PORT = 8089;
 server.listen(PORT, () => {
     console.log(` >>>>> 🚀 Server started at http://localhost:${PORT}`)
 })
 
 server.on('error', (err) => console.log(err))
-
-
-
-
-
-
-
-
-

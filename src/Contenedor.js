@@ -1,119 +1,62 @@
-const fs = require("fs");
+const knex = require('knex');
 
-class Contenedor {
-  constructor(name) {
-    this.name = name;
-  }
-
-  // Recibe un objeto, lo guarda en el archivo, devuelve el id asignado
-  async save(obj) {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      if (productos.length !== 0) {
-        productos.sort((a, b) => {
-          return b.id - a.id;
-        });
-        const idAsignado = productos[0].id + 1;
-        productos.push({ ...obj, id: idAsignado });
-        await fs.promises.writeFile(
-          this.name,
-          JSON.stringify(productos, null, 2)
-        );
-        return idAsignado;
-      } else {
-        productos.push({ ...obj, id: 1 });
-        await fs.promises.writeFile(
-          this.name,
-          JSON.stringify(productos, null, 2)
-        );
-        return 1;
-      }
-    } catch (error) {
-      console.log("Algo salió mal!");
+class Container {
+    constructor(config, tableName) {
+        this.config = config;
+        this.tableName = tableName;
+        this.knex = knex(this.config);
     }
-  }
-  async getById(id) {
-    try {
-      let productoCapturado;
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      productos.forEach((prod) => {
-        if (prod.id === id) {
-          productoCapturado = prod;
+    save = obj => {
+        this.knex(this.tableName).insert(obj)
+            .then(() => console.log('Saved'))
+            .catch(err => { console.log(err); throw err })
+            .finally(() => this.knex.destroy())
+    }
+    getById = async id => {
+        try {
+            let obj = await this.knex.from(this.tableName).select().table(this.tableName).where('id', id).first();
+            if (obj) {
+                return obj;
+            } else {
+                return { message: 'ERROR' };
+            }
+        } catch (err) {
+            return { message: 'ERROR' };
         }
-      });
-      return productoCapturado || null;
-    } catch (error) {
-      console.log("Algo salió mal!");
     }
-  }
-  async getAll() {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      return productos;
-    } catch (error) {
-      console.log("Algo salió mal!");
-      console.log(error);
-    }
-  }
-  async deleteById(id) {
-    try {
-      let newProducts = [];
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      productos.forEach((prod) => {
-        if (prod.id !== id) {
-          newProducts.push(prod);
+    getAll = async () => {
+        try {
+            let objs = await this.knex.from(this.tableName).select('*')
+            return objs;
+        } catch (err) {
+            console.log(err);
+            return [];
         }
-      });
-      await fs.promises.writeFile(
-        this.name,
-        JSON.stringify(newProducts, null, 2)
-      );
-    } catch (error) {
-      console.log("Algo salió mal!");
     }
-  }
-  async deleteAll() {
-    await fs.promises.writeFile(this.name, "[]");
-  }
-
-  async getProductRandom() {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      const rand = Math.floor(Math.random() * productos.length);
-      return productos[rand];
-    } catch (error) {
-      console.log("Algo salió mal!");
+    deleteById = async id => {
+        try {
+            this.knex.from(this.tableName).where('id', '=', id).del()
+            return { message: 'DONE!' };
+        } catch (err) {
+            return { message: 'ERROR' };
+        }
     }
-  }
-
-  async modifyProduct(id, reemplazo) {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      const productoAModificar = await this.getById(id);
-      if (productoAModificar !== null) {
-        await this.deleteById(id);
-        productos = await fs.promises.readFile(this.name, "utf-8");
-        productos = JSON.parse(productos);
-        const newProduct = { ...productoAModificar, ...reemplazo };
-        productos.push(newProduct);
-        productos.sort((a, b) => a.id - b.id);
-        await fs.promises.writeFile(
-          this.name,
-          JSON.stringify(productos, null, 2)
-        );
-        return newProduct;
-      }
-      return null;
-    } catch (error) {
-      console.log("Algo salió mal!");
+    deleteAll = async () => {
+        try {
+            this.knex.from(this.tableName).del()
+            return { message: 'DONE!' }
+        } catch (err) {
+            return { message: 'ERROR' };
+        }
     }
-  }
+    update = async obj => {
+        try {
+            this.knex.from(this.tableName).update(obj).update()
+            return { message: 'DONE!' };
+        } catch (err) {
+            return { message: 'ERROR' };
+        }
+    }
 }
 
-module.exports = Contenedor;
+module.exports = Container;
